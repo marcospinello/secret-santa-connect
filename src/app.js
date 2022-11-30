@@ -1,12 +1,11 @@
 async function secretSanta () {
 
-  const cards = await miro.board.getSelection();
-  console.log( cards );
-  let ids = cards.map( card => card.id );
+  const stickyNotes = await miro.board.getSelection();
+  console.log( stickyNotes );
+  let ids = stickyNotes.map( stickyNote => stickyNote.id );
   console.log( ids );
 
   const participants = buildCollection(ids);
-
 
   while ( Object.keys(participants).length > 1 ) {
     const participantId1 = pickParticipant( participants );
