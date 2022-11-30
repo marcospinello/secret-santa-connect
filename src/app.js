@@ -6,14 +6,15 @@ async function secretSanta () {
   console.log( ids );
 
   const participants = buildCollection(ids);
-  
-  while ( ids.length > 1 ) {
-    const participantId1 = pickParticipant( participants, ids );
-    ids = Object.keys( participants );
-    const participantId2 = pickParticipant( participants, ids );
-    ids = Object.keys( participants );
+
+
+  while ( Object.keys(participants).length > 1 ) {
+    const participantId1 = pickParticipant( participants );
+    const participantId2 = pickParticipant( participants );
+
     // create connection
     await createConnection( participantId1, participantId2 );
+    console.log( participants )
   };
 };
 
@@ -25,15 +26,17 @@ function buildCollection(ids) {
   return collection;
 };
 
-function pickParticipant(participants, ids) {
+function pickParticipant ( participants ) {
+  const ids = Object.keys( participants );
+  console.log( ids );
   const random = Math.floor(Math.random() * ids.length);
-  console.log( random );
+//  console.log( random );
 
   const randomKey = ids[random];
-  console.log( randomKey );
+//  console.log( randomKey );
 
   delete participants[ randomKey ];
-  console.log( participants );
+//  console.log( participants );
   
   return randomKey
 }
