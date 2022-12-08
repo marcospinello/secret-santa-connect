@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mirotone@2.0.0/dist/styles.css" />
     <link rel="stylesheet" href="/src/assets/style.css" />
     <script src="https://miro.com/app/static/sdk/v2/miro.js"></script>
     <title>Secret Santa Connect</title>
@@ -17,17 +18,28 @@
         <h2>Create Secret Santa pairs!</h2>
         <p>
           <p>To play Secret Santa:</p>
+          <!--
           <ol>
             <li>Create one sticky note per participant.</li>
             <li>On each sticky note, write the name of the participant.</li>
             <li>Select all the sticky notes with the names of the participants.</li>
             <li>Click the button to create random pairs.</li>
             <li>Burn cash! 💰 💸 🤑</li>
-        </ol>
+          </ol>
+          -->
       </p>
       </div>
+     <div class="cs1 ce12">
+       <button
+         class="button button-primary"
+         onclick="participantNumber()">
+         How many participants?
+       </button>
+     </div>
       <div class="cs1 ce12">
-        <button class="button button-primary" onclick="secretSanta()">
+        <button
+          class="button button-primary"
+          onclick="secretSanta()">
           Pair 'em up!
         </button>
       </div>
