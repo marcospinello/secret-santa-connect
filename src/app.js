@@ -1,5 +1,5 @@
 async function secretSanta () {
-
+console.log( "Secret Santa" );
   // Get the manually selected sticky notes.
   const stickyNotes = await miro.board.getSelection();
   console.log( stickyNotes );
@@ -65,117 +65,81 @@ function pickAndRemoveParticipant ( participants ) {
   return randomId;
 }
 
-// Enter number of participants
-async function participantNumber () {
-  // Prompt user to enter number of participants.
-  const howMany = prompt( "How many friends are participating in the Secret Santa?", "Enter a number between 2 and 20." );
-
-  // Convert the user input to an integer.
-  parseInt( howMany );
-  console.log( howMany );
-  
-  // Validate the user input.
-  if ( howMany === null || howMany === " " || howMany === NaN ) {
-    prompt( "That doesn't look like a number between 2 and 20. Try again.", "Enter a number between 2 and 20." );
-  } else if ( howMany < 2 ) {
-    prompt( "That's too few. Try again.", "Enter a number between 2 and 20" );
-  } else if ( howMany > 20 ) {
-    parseInt(prompt( "That's too many. Try again.", "Enter a number between 2 and 20" ));
-  } else {
-    alert( "Great! Click \"Enter their names\" to proceed." );
-  };
-
-  // Return the number of participants.
-  return howMany;
-};
-
 // Enter names of participants.
 async function participantNames () {
- 
+
   // Prompt user to enter names of participants.
-  const names = prompt( "What are the names of your friends? Enter a name for each participant.", "Names must be comma-separated." );
+  let names = prompt( "What are the names of your friends? Enter a name for each participant.", "Names must be comma-separated." );
   console.log( names );
 
-  // Validate the user input.
-  if ( names !== ([A-Za-z,]) ) {
-    prompt( "You can enter only alphabetic characters and commas. Try again.", "Names must be comma-separated." );
-  } else {
-    alert( "Great! Click \"Create sticky notes\" to proceed." );
-  };
-  
+  alert( "Great! Click \"Create sticky notes\" to proceed." );
+    
   // Create an array of names.
   const nameList = names.split( "," );
   console.log( nameList );
 
-  // Trim leading and trailing spaces from each name.  
-  for (name in nameList) {
-    name = name.trim();
-  };
+  // Trim whitespace from each name.
+  const trimmedNameList = nameList.map( name => name.trim() );
 
-  // Return the array of names.
-  return nameList;
+  // Create a sticky note for each participant.
+  const stickies = []
+  for ( let i = 0; i < trimmedNameList.length; i++ ) {
+    const randomFillColor = getRandomElementInArray( stickyNoteFillColor );
+    const sticky = await createSticky( trimmedNameList[ i ], randomFillColor );
+    stickies.push(sticky)
+  }
+
+  await miro.board.viewport.zoomTo(stickies)
 };
 
 const stickyNoteFillColor = [
-  gray,
-  light_yellow,
-  yellow,
-  orange,
-  light_green,
-  green,
-  dark_green,
-  cyan,
-  light_pink,
-  pink,
-  violet,
-  red,
-  light_blue,
-  blue,
-  dark_blue,
-  black
+  'gray',
+  'light_yellow',
+  'yellow',
+  'orange',
+  'light_green',
+  'green',
+  'dark_green',
+  'cyan',
+  'light_pink',
+  'pink',
+  'violet',
+  'red',
+  'light_blue',
+  'blue',
+  'dark_blue',
+  'black'
 ];
   
-const connectorStart = [
-  stealth,
-  arrow,
-  filled_triangle,
-  triangle,
-  filled_diamond,
-  diamond,
-  filled_oval,
-  oval,
-  erd_one,
-  erd_many,
-  erd_one_or_many,
-  erd_only_one,
-  erd_zero_or_many,
-  erd_zero_or_one
+const connectorStartEnd = [
+  'stealth',
+  'arrow',
+  'filled_triangle',
+  'triangle',
+  'filled_diamond',
+  'diamond',
+  'filled_oval',
+  'oval',
+  'erd_one',
+  'erd_many',
+  'erd_one_or_many',
+  'erd_only_one',
+  'erd_zero_or_many',
+  'erd_zero_or_one'
 ];
 
-const connectorEnd = [
-  stealth,
-  arrow,
-  filled_triangle,
-  triangle,
-  filled_diamond,
-  diamond,
-  filled_oval,
-  oval,
-  erd_one,
-  erd_many,
-  erd_one_or_many,
-  erd_only_one,
-  erd_zero_or_many,
-  erd_zero_or_one
-];
-
+function getRandomElementInArray ( arr ) {
+  const randomIndex = Math.floor( Math.random() * arr.length );
+  return arr[ randomIndex ];
+};
+  
 const connectorColor = Math.floor( Math.random() * 16777215 ).toString( 16 );
 console.log( connectorColor );
 
 // Create a sticky note for each participant.
-async function createStickyNotes ( howMany, nameList[i] ) {
+async function createSticky(name, randomFillColor) {
   await miro.board.createStickyNote({
-    content: nameList[i],
+    content: name,
     style: {
       fillColor: randomFillColor,
     },
@@ -194,11 +158,11 @@ async function createConnection ( id1, id2 ) {
     // End at participant 2.
     end: { item: id2 },
 
-    startStrokeCap: connectorRandomStartStrokeCap,
-    endStrokeCap: connectorRandomEndStrokeCap,
+    startStrokeCap: connectorRandomStartEnd,
+    endStrokeCap: connectorRandomStartEnd,
     strokeColor: connectorRandomStrokeColor,
 
   } );
 };
 
-secretSanta();
+// secretSanta();
